@@ -10,12 +10,16 @@ set cpo&vim
 
 function! cursorword#highlight() abort
   if !get(g:, 'cursorword_highlight', 1) | return | endif
-  highlight CursorWord0 term=underline cterm=underline gui=underline
+
   redir => out
     silent! highlight CursorLine
   redir END
-  let highlight = 'highlight CursorWord1 term=underline cterm=underline gui=underline'
-  execute highlight matchstr(out, 'ctermbg=#\?\w\+') matchstr(out, 'guibg=#\?\w\+')
+
+  let ctermbg = matchstr(out, 'ctermbg=#\?\w\+')
+  let guibg = matchstr(out, 'guibg=#\?\w\+')
+
+  execute 'highlight CursorWord0' ctermbg guibg
+  execute 'highlight CursorWord1' ctermbg guibg
 endfunction
 
 let s:alphabets = '^[\x00-\x7f\xb5\xc0-\xd6\xd8-\xf6\xf8-\u01bf\u01c4-\u02af\u0370-\u0373\u0376\u0377\u0386-\u0481\u048a-\u052f]\+$'
